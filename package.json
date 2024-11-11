@@ -1,0 +1,42 @@
+{
+  "name": "rainbow-struct-field-tags",
+  "displayName": "Rainbow Struct Field Tags",
+  "description": "A simple Visual Studio Code extension highlighting struct field tags in Go that make it easier to read.",
+  "version": "0.0.1",
+  "icon": "",
+  "publisher": "se-dev-pion",
+  "repository": "https://github.com/se-dev-pion/rainbow-struct-field-tags",
+  "engines": {
+    "vscode": "^1.85.2"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:go"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {},
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test",
+    "build": "vsce package --no-dependencies",
+    "publish": "vsce publish --no-dependencies"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.9",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.85.2",
+    "@typescript-eslint/eslint-plugin": "^8.10.0",
+    "@typescript-eslint/parser": "^8.7.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "@vscode/vsce": "^3.2.1",
+    "eslint": "^9.13.0",
+    "typescript": "^5.6.3"
+  }
+}
