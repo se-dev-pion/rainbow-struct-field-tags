@@ -3,7 +3,7 @@
   "displayName": "Rainbow Struct Field Tags",
   "description": "A simple Visual Studio Code extension highlighting struct field tags in Go that make it easier to read.",
   "version": "0.0.1",
-  "icon": "",
+  "icon": "./assets/logo.png",
   "publisher": "se-dev-pion",
   "repository": "https://github.com/se-dev-pion/rainbow-struct-field-tags",
   "engines": {
