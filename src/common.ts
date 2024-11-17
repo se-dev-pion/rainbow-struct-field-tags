@@ -1,4 +1,4 @@
-export const regexpMatchTags: RegExp = /[^/\*.*\*/]\s*`.+`/;
+export const regexpMatchTags: RegExp = /([a-zA-Z_]+[a-zA-Z0-9_]*|})\s*[^(/\*.*\*/)|=]*\s*`.+`/;
 
 // [TagStringSeparators]
 export const keyValueSeparator = 'key_value';
