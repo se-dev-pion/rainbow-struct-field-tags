@@ -7,7 +7,7 @@ export function highlightStructFieldTags(context: vscode.ExtensionContext) {
         color: '#1E90FF'
     });
     const itemStyle = vscode.window.createTextEditorDecorationType({
-        color: '#FFD700'
+        color: '#FFA500'
     });
     const optionStyle = vscode.window.createTextEditorDecorationType({
         color: '#FF6347'
