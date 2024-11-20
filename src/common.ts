@@ -12,4 +12,8 @@ export const separators = {
     [itemOptionSeparator]: '=',
     [valueBorder]: '"',
     [tagBorder]: '`'
+};
+export const gormSeparators = {
+    [valueItemsSeparator]: ';',
+    [itemOptionSeparator]: ':'
 }; // [/]

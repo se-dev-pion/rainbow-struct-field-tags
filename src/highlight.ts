@@ -1,5 +1,5 @@
 import vscode from 'vscode';
-import { itemOptionSeparator, keyValueSeparator, regexpMatchTags, separators, tagBorder, valueBorder, valueItemsSeparator } from './common';
+import { gormSeparators, itemOptionSeparator, keyValueSeparator, regexpMatchTags, separators, tagBorder, valueBorder, valueItemsSeparator } from './common';
 
 export function highlightStructFieldTags(context: vscode.ExtensionContext) {
     // [DefineStyles]
@@ -13,7 +13,7 @@ export function highlightStructFieldTags(context: vscode.ExtensionContext) {
         color: '#FF6347'
     });
     const gapColor = vscode.window.createTextEditorDecorationType({
-        color: 'transparent'
+        color: 'rgba(128,128,128,0.5)'
     }); // [/]
     const updateDecorations = () => {
         // [CheckActiveEditor]
@@ -69,50 +69,56 @@ export function highlightStructFieldTags(context: vscode.ExtensionContext) {
                 }
             }; // [/]
             let inValue: boolean = false;
-            for (let j = tagStart; j < tagEnd; j++) {
-                switch (line[j]) {
-                    // [RecordKeyRange]
-                    case separators[keyValueSeparator]:
-                        if (keyStart !== -1) {
-                            recordKeyRange(j);
-                        }
-                        break; // [/]
-                    case separators[valueBorder]:
-                        // [RecordValueRangeAndSetKeyStart]
-                        if (inValue) {
-                            recordValueRange(j);
-                            keyStart = j + 1;
-                        } // [/]
-                        // [SetItemStart]
-                        else {
-                            itemStart = j + 1;
-                        } // [/]
-                        inValue = !inValue;
-                        break;
-                    case separators[itemOptionSeparator]:
-                        // [RecordItemRangeAndSetOptionStart]
-                        if (itemStart !== -1) {
-                            recordItemRange(j);
-                            optionStart = j + 1;
-                        } // [/]
-                        break;
-                    case separators[valueItemsSeparator]:
-                        // [SkipEmptyValue]
-                        if (!inValue) {
-                            continue;
-                        } // [/]
-                        recordRange(gapRanges, i, j, j + 1);
-                        // [RecordOptionRangeAndStartFindingNextOption]
-                        if (optionStart !== -1) {
-                            recordOptionRange(j);
-                        }  // [/]
-                        // [RecordItemRangeAndStartFindingNextItem]
-                        else if (itemStart !== -1) {
-                            recordItemRange(j);
-                        } // [/]
+            let gormTag: boolean = false;
+            let j = tagStart;
+            let char: string;
+            while (j < tagEnd) {
+                char = line[j];
+                // [RecordKeyRange]
+                if (!inValue && char === separators[keyValueSeparator]) {
+                    if (keyStart !== -1) {
+                        recordKeyRange(j);
+                    }
+                } // [/]
+                if (char === separators[valueBorder]) {
+                    // [RecordValueRangeAndSetKeyStart]
+                    if (inValue) {
+                        recordValueRange(j);
+                        keyStart = j + 1;
+                        gormTag = false;
+                    } // [/]
+                    // [SetItemStart]
+                    else {
                         itemStart = j + 1;
-                        break;
+                        const keyRange = keyRanges[keyRanges.length - 1];
+                        gormTag = line.slice(keyRange.start.character, keyRange.end.character).trim() === 'gorm';
+                    } // [/]
+                    inValue = !inValue;
                 }
+                // [RecordItemRange]
+                if ((gormTag && char === gormSeparators[itemOptionSeparator]) || (!gormTag && char === separators[itemOptionSeparator])) {
+                    if (itemStart !== -1) {
+                        recordItemRange(j);
+                        optionStart = j + 1;
+                    }
+                } // [/]
+                if ((gormTag && char === gormSeparators[valueItemsSeparator]) || (!gormTag && char === separators[valueItemsSeparator])) {
+                    // [SkipEmptyValue]
+                    if (!inValue) {
+                        continue;
+                    } // [/]
+                    recordRange(gapRanges, i, j, j + 1);
+                    // [RecordOptionRangeAndStartFindingNextOption]
+                    if (optionStart !== -1) {
+                        recordOptionRange(j);
+                    }  // [/]
+                    // [RecordItemRangeAndStartFindingNextItem]
+                    else if (itemStart !== -1) {
+                        recordItemRange(j);
+                    } // [/]
+                    itemStart = j + 1;
+                }
+                j++;
             }
         }
         // [ApplyDecorations]
