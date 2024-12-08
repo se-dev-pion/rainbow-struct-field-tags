@@ -12,3 +12,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Support `gorm` tags
 - Optimize delimiter(`,`/`;`) styles
+
+## [v0.0.3]
+
+- Support setting highlight colors
+- Provide Chinese documents
