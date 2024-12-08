@@ -17,3 +17,10 @@ export const gormSeparators = {
     [valueItemsSeparator]: ';',
     [itemOptionSeparator]: ':'
 }; // [/]
+
+// [ConfigurationKeys]
+export const configKey = "rainbow-struct-field-tags";
+export const configKeyColor = "key-color";
+export const configValueItemColor = "value-item-color";
+export const configValueOptionColor = "value-option-color";
+export const configValueGapColor = "value-gap-color"; // [/]
