@@ -1,21 +1,21 @@
 import vscode from 'vscode';
-import { gormSeparators, itemOptionSeparator, keyValueSeparator, regexpMatchTags, separators, tagBorder, valueBorder, valueItemsSeparator } from './common';
+import { configValueItemColor, configKey, configKeyColor, configValueOptionColor, gormSeparators, itemOptionSeparator, keyValueSeparator, regexpMatchTags, separators, tagBorder, valueBorder, valueItemsSeparator, configValueGapColor } from './common';
 
-export function highlightStructFieldTags(context: vscode.ExtensionContext) {
-    // [DefineStyles]
-    const keyStyle = vscode.window.createTextEditorDecorationType({
-        color: '#1E90FF'
-    });
-    const itemStyle = vscode.window.createTextEditorDecorationType({
-        color: '#FFA500'
-    });
-    const optionStyle = vscode.window.createTextEditorDecorationType({
-        color: '#FF6347'
-    });
-    const gapColor = vscode.window.createTextEditorDecorationType({
-        color: 'rgba(128,128,128,0.5)'
-    }); // [/]
+export function highlightStructFieldTags(_context: vscode.ExtensionContext) {
     const updateDecorations = () => {
+        // [DefineStyles]
+        const keyStyle = vscode.window.createTextEditorDecorationType({
+            color: vscode.workspace.getConfiguration(configKey).get(configKeyColor) as string,
+        });
+        const itemStyle = vscode.window.createTextEditorDecorationType({
+            color: vscode.workspace.getConfiguration(configKey).get(configValueItemColor) as string,
+        });
+        const optionStyle = vscode.window.createTextEditorDecorationType({
+            color: vscode.workspace.getConfiguration(configKey).get(configValueOptionColor) as string,
+        });
+        const gapColor = vscode.window.createTextEditorDecorationType({
+            color: vscode.workspace.getConfiguration(configKey).get(configValueGapColor) as string,
+        }); // [/]
         // [CheckActiveEditor]
         const editor = vscode.window.activeTextEditor;
         if (!editor) {
@@ -129,8 +129,11 @@ export function highlightStructFieldTags(context: vscode.ExtensionContext) {
     };
     updateDecorations();
     // [AddEventListeners]
+    vscode.workspace.onDidOpenTextDocument(updateDecorations);
     vscode.workspace.onDidChangeTextDocument(updateDecorations);
+    vscode.workspace.onDidChangeConfiguration(updateDecorations);
     vscode.window.onDidChangeActiveTextEditor(updateDecorations);
+    vscode.window.onDidChangeVisibleTextEditors(updateDecorations);
     vscode.window.onDidChangeTextEditorVisibleRanges(updateDecorations); // [/]
 }
 

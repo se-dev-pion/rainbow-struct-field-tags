@@ -16,7 +16,34 @@
     "onLanguage:go"
   ],
   "main": "./out/extension.js",
-  "contributes": {},
+  "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "Rainbow Struct Field Tags Configuration",
+      "properties": {
+        "rainbow-struct-field-tags.key-color": {
+          "type": "string",
+          "default": "#1E90FF",
+          "description": "Highlight color of keys in struct field tags."
+        },
+        "rainbow-struct-field-tags.value-item-color": {
+          "type": "string",
+          "default": "#FFA500",
+          "description": "Highlight color of items in struct field tag values."
+        },
+        "rainbow-struct-field-tags.value-option-color": {
+          "type": "string",
+          "default": "#FF6347",
+          "description": "Highlight color of options in struct field tag values."
+        },
+        "rainbow-struct-field-tags.value-gap-color": {
+          "type": "string",
+          "default": "rgba(128,128,128,0.5)",
+          "description": "Highlight color of gaps between items struct field tag values."
+        }
+      }
+    }
+  },
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
