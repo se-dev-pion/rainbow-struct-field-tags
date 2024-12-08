@@ -1,4 +1,6 @@
-# rainbow-struct-field-tags
+# Rainbow Struct Field Tags
+
+English|[中文](README.zh.md)
 
 ## Introduction
 
