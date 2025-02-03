@@ -63,22 +63,16 @@ export function highlightStructFieldTags(_context: vscode.ExtensionContext) {
             const recordValueRange = (end: number) => {
                 if (optionStart !== -1) {
                     recordOptionRange(end);
-                }
-                else if (itemStart !== -1) {
+                } else if (itemStart !== -1) {
                     recordItemRange(end);
                 }
             }; // [/]
-            let inValue: boolean = false;
-            let gormTag: boolean = false;
-            let j = tagStart;
-            let char: string;
-            while (j < tagEnd) {
-                char = line[j];
+            let [inValue, gormTag] = [false, false];
+            for (let j: number = tagStart; j < tagEnd; j++) {
+                const char: string = line[j];
                 // [RecordKeyRange]
-                if (!inValue && char === separators[keyValueSeparator]) {
-                    if (keyStart !== -1) {
-                        recordKeyRange(j);
-                    }
+                if (!inValue && char === separators[keyValueSeparator] && keyStart !== -1) {
+                    recordKeyRange(j);
                 } // [/]
                 if (char === separators[valueBorder]) {
                     // [RecordValueRangeAndSetKeyStart]
@@ -90,17 +84,15 @@ export function highlightStructFieldTags(_context: vscode.ExtensionContext) {
                     // [SetItemStart]
                     else {
                         itemStart = j + 1;
-                        const keyRange = keyRanges[keyRanges.length - 1];
+                        const keyRange: vscode.Range = keyRanges[keyRanges.length - 1];
                         gormTag = line.slice(keyRange.start.character, keyRange.end.character).trim() === 'gorm';
                     } // [/]
                     inValue = !inValue;
                 }
                 // [RecordItemRange]
-                if ((gormTag && char === gormSeparators[itemOptionSeparator]) || (!gormTag && char === separators[itemOptionSeparator])) {
-                    if (itemStart !== -1) {
-                        recordItemRange(j);
-                        optionStart = j + 1;
-                    }
+                if ((gormTag && char === gormSeparators[itemOptionSeparator]) || (!gormTag && char === separators[itemOptionSeparator]) && itemStart !== -1) {
+                    recordItemRange(j);
+                    optionStart = j + 1;
                 } // [/]
                 if ((gormTag && char === gormSeparators[valueItemsSeparator]) || (!gormTag && char === separators[valueItemsSeparator])) {
                     // [SkipEmptyValue]
@@ -118,7 +110,6 @@ export function highlightStructFieldTags(_context: vscode.ExtensionContext) {
                     } // [/]
                     itemStart = j + 1;
                 }
-                j++;
             }
         }
         // [ApplyDecorations]

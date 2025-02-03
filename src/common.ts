@@ -6,14 +6,14 @@ export const valueItemsSeparator = 'value_items';
 export const valueBorder = 'value_border';
 export const itemOptionSeparator = 'item_option';
 export const tagBorder = 'tag_border';
-export const separators = {
+export const separators: Record<string, string> = {
     [keyValueSeparator]: ':',
     [valueItemsSeparator]: ',',
     [itemOptionSeparator]: '=',
     [valueBorder]: '"',
     [tagBorder]: '`'
 };
-export const gormSeparators = {
+export const gormSeparators: Record<string, string> = {
     [valueItemsSeparator]: ';',
     [itemOptionSeparator]: ':'
 }; // [/]
