@@ -8,4 +8,4 @@
 
 ## 示例
 
-![demo.png](https://raw.githubusercontent.com/se-dev-pion/rainbow-struct-field-tags/refs/heads/main/assets/demo.png)
+![demo.png](https://raw.githubusercontent.com/se-dev-pion/rainbow-struct-field-tags/refs/heads/main/images/demo.png)
