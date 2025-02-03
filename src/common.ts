@@ -24,3 +24,5 @@ export const configKeyColor = "key-color";
 export const configValueItemColor = "value-item-color";
 export const configValueOptionColor = "value-option-color";
 export const configValueGapColor = "value-gap-color"; // [/]
+
+export const singleLineAnnotationSign = '//';

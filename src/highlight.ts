@@ -1,5 +1,5 @@
 import vscode from 'vscode';
-import { configValueItemColor, configKey, configKeyColor, configValueOptionColor, gormSeparators, itemOptionSeparator, keyValueSeparator, regexpMatchTags, separators, tagBorder, valueBorder, valueItemsSeparator, configValueGapColor } from './common';
+import { configValueItemColor, configKey, configKeyColor, configValueOptionColor, gormSeparators, itemOptionSeparator, keyValueSeparator, regexpMatchTags, separators, tagBorder, valueBorder, valueItemsSeparator, configValueGapColor, singleLineAnnotationSign } from './common';
 
 export function highlightStructFieldTags(_context: vscode.ExtensionContext) {
     const updateDecorations = () => {
@@ -38,8 +38,13 @@ export function highlightStructFieldTags(_context: vscode.ExtensionContext) {
             if (!regexpMatchTags.test(line)) {
                 continue;
             } // [/]
+            // [SkipSingleLineAnnotations]
+            const tagLeftBorder: number = line.indexOf(separators[tagBorder]);
+            if (line.slice(0, tagLeftBorder).includes(singleLineAnnotationSign)) {
+                continue;
+            } // [/]
             // [LimitTagStringRange]
-            const tagStart: number = line.indexOf(separators[tagBorder]) + 1;
+            const tagStart: number = tagLeftBorder + 1;
             const tagEnd: number = line.lastIndexOf(separators[tagBorder]); // [/]
             // [KeyRangeRecorder]
             let keyStart: number = tagStart;
