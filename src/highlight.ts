@@ -1,9 +1,9 @@
 import vscode from 'vscode';
-import { configValueItemColor, configKey, configKeyColor, configValueOptionColor, gormSeparators, itemOptionSeparator, keyValueSeparator, regexpMatchTags, separators, tagBorder, valueBorder, valueItemsSeparator, configValueGapColor, singleLineAnnotationSign } from './common';
+import { configValueItemColor, configKey, configKeyColor, configValueOptionColor, gormSeparators, itemOptionSeparator, keyValueSeparator, regexpMatchTags, separators, tagBorder, valueBorder, valueItemsSeparator, configValueGapColor, singleLineAnnotationSign, configBackgroundColor, configTextColor } from './common';
 
 export function highlightStructFieldTags(_context: vscode.ExtensionContext) {
     const updateDecorations = () => {
-        // [DefineStyles]
+        // [DefineStyles] The style created earlier has higher priority
         const keyStyle = vscode.window.createTextEditorDecorationType({
             color: vscode.workspace.getConfiguration(configKey).get(configKeyColor) as string,
         });
@@ -15,6 +15,10 @@ export function highlightStructFieldTags(_context: vscode.ExtensionContext) {
         });
         const gapColor = vscode.window.createTextEditorDecorationType({
             color: vscode.workspace.getConfiguration(configKey).get(configValueGapColor) as string,
+        });
+        const tagStyle = vscode.window.createTextEditorDecorationType({
+            color: vscode.workspace.getConfiguration(configKey).get(configTextColor),
+            backgroundColor: vscode.workspace.getConfiguration(configKey).get(configBackgroundColor) as string,
         }); // [/]
         // [CheckActiveEditor]
         const editor = vscode.window.activeTextEditor;
@@ -27,6 +31,7 @@ export function highlightStructFieldTags(_context: vscode.ExtensionContext) {
             return;
         } // [/]
         // [Preparations]
+        const tagRanges = new Array<vscode.Range>();
         const keyRanges = new Array<vscode.Range>();
         const itemRanges = new Array<vscode.Range>();
         const optionRanges = new Array<vscode.Range>();
@@ -43,9 +48,10 @@ export function highlightStructFieldTags(_context: vscode.ExtensionContext) {
             if (line.slice(0, tagLeftBorder).includes(singleLineAnnotationSign)) {
                 continue;
             } // [/]
-            // [LimitTagStringRange]
+            // [RecordTagStringRange]
             const tagStart: number = tagLeftBorder + 1;
-            const tagEnd: number = line.lastIndexOf(separators[tagBorder]); // [/]
+            const tagEnd: number = line.lastIndexOf(separators[tagBorder]);
+            recordRange(tagRanges, i, tagLeftBorder, tagEnd + 1); // [/]
             // [KeyRangeRecorder]
             let keyStart: number = tagStart;
             const recordKeyRange = (end: number) => {
@@ -118,6 +124,7 @@ export function highlightStructFieldTags(_context: vscode.ExtensionContext) {
             }
         }
         // [ApplyDecorations]
+        editor.setDecorations(tagStyle, tagRanges);
         editor.setDecorations(keyStyle, keyRanges);
         editor.setDecorations(itemStyle, itemRanges);
         editor.setDecorations(optionStyle, optionRanges);

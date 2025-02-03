@@ -40,6 +40,16 @@
           "type": "string",
           "default": "rgba(128,128,128,0.5)",
           "description": "Highlight color of gaps between items struct field tag values."
+        },
+        "rainbow-struct-field-tags.background-color": {
+          "type": "string",
+          "default": "#000c18",
+          "description": "Background color of struct field tag strings."
+        },
+        "rainbow-struct-field-tags.text-color": {
+          "type": "string",
+          "default": "#22aa44",
+          "description": "Basic text color of struct field tag strings."
         }
       }
     }
