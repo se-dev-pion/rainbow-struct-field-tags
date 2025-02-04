@@ -1,5 +1,5 @@
 import vscode from 'vscode';
-import { configValueItemColor, configKey, configKeyColor, configValueOptionColor, gormSeparators, itemOptionSeparator, keyValueSeparator, regexpMatchTags, separators, tagBorder, valueBorder, valueItemsSeparator, configValueGapColor, singleLineAnnotationSign, configBackgroundColor, configTextColor } from './common';
+import { configValueItemColor, configKey, configKeyColor, configValueOptionColor, gormSeparators, itemOptionSeparator, keyValueSeparator, regexpMatchTags, separators, tagBorder, valueBorder, valueItemsSeparator, configValueGapColor, singleLineAnnotationSign, configBackgroundColor, configTextColor, multiLineAnnotationEnd, multiLineAnnotationStart } from './common';
 
 export function highlightStructFieldTags(_context: vscode.ExtensionContext) {
     const updateDecorations = () => {
@@ -36,11 +36,27 @@ export function highlightStructFieldTags(_context: vscode.ExtensionContext) {
         const itemRanges = new Array<vscode.Range>();
         const optionRanges = new Array<vscode.Range>();
         const gapRanges = new Array<vscode.Range>();
-        const lines: string[] = document.getText().split('\n'); // [/]
+        const lines: string[] = document.getText().split('\n');
+        const multiLineAnnotationAreas: vscode.Range[] = scanMultiLineAnnotations(document, 0, document.getText().length - 1, new Array<vscode.Range>()); // [/]
         for (let i = 0; i < lines.length; i++) {
             // [SkipNoMatchingLines]
             const line: string = lines[i];
             if (!regexpMatchTags.test(line)) {
+                continue;
+            } // [/]
+            // [SkipMultiLineAnnotations]
+            let matchStr: string = (regexpMatchTags.exec(line) as RegExpExecArray)[0];
+            const start: number = line.indexOf(matchStr);
+            const end: number = start + matchStr.length - 1;
+            const matchArea = new vscode.Range(
+                new vscode.Position(i, start),
+                new vscode.Position(i, end)
+            );
+            const overlapAreas: vscode.Range[] = overlapWithMultiLineAnnotationAreas(multiLineAnnotationAreas, matchArea);
+            for (const area of overlapAreas) {
+                matchStr = matchStr.replace(document.getText(area), '');
+            }
+            if (!regexpMatchTags.test(matchStr)) {
                 continue;
             } // [/]
             // [SkipSingleLineAnnotations]
@@ -145,4 +161,37 @@ function recordRange(ranges: vscode.Range[], line: number, start: number, end: n
         new vscode.Position(line, start),
         new vscode.Position(line, end)
     ));
+}
+
+function scanMultiLineAnnotations(document: vscode.TextDocument, offset: number, end: number, areas: vscode.Range[]): vscode.Range[] {
+    let areaStart: number = document.getText().slice(offset).indexOf(multiLineAnnotationStart);
+    if (areaStart !== -1) {
+        areaStart += offset;
+        const offsetWithOutHead: number = areaStart + 2;
+        let areaEnd: number = document.getText().slice(offsetWithOutHead).indexOf(multiLineAnnotationEnd);
+        areaEnd = Math.min(end, areaEnd === -1 ? end : areaEnd + offsetWithOutHead + 2);
+        areas.push(new vscode.Range(document.positionAt(areaStart), document.positionAt(areaEnd)));
+        scanMultiLineAnnotations(document, areaEnd, end, areas);
+    }
+    return areas;
+}
+
+function overlapWithMultiLineAnnotationAreas(annotationAreas: vscode.Range[], matchArea: vscode.Range): vscode.Range[] {
+    if (annotationAreas.length === 0) {
+        return [];
+    }
+    let annotationArea: vscode.Range;
+    const overlaps = new Array<vscode.Range>();
+    while (annotationAreas.length > 0) {
+        annotationArea = annotationAreas[0];
+        if (annotationArea.start.isAfter(matchArea.end)) {
+            break;
+        }
+        const overlap: vscode.Range | undefined = annotationArea.intersection(matchArea);
+        if (overlap) {
+            overlaps.push(overlap);
+        }
+        annotationAreas.shift();
+    }
+    return overlaps;
 }

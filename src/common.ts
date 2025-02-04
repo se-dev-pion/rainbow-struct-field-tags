@@ -27,4 +27,7 @@ export const configValueGapColor = "value-gap-color";
 export const configBackgroundColor = 'background-color';
 export const configTextColor = 'text-color'; // [/]
 
+// [AnnotationSigns]
 export const singleLineAnnotationSign = '//';
+export const multiLineAnnotationStart = '/*';
+export const multiLineAnnotationEnd = '*/'; // [/]
