@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import { highlightStructFieldTags } from './highlight';
+import { addHighlight } from './services/highlight';
 
 export function activate(context: vscode.ExtensionContext) {
-	highlightStructFieldTags(context);
+	addHighlight();
 }

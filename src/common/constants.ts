@@ -1,3 +1,4 @@
+export const supportedLanguage = 'go';
 export const regexpMatchTags = /([a-zA-Z_]+[a-zA-Z0-9_]*|})\s*[^(/\*.*\*/)|=]*\s*`.+`/;
 
 // [TagStringSeparators]
@@ -12,10 +13,6 @@ export const separators = {
     [itemOptionSeparator]: '=',
     [valueBorder]: '"',
     [tagBorder]: '`'
-} as const;
-export const gormSeparators = {
-    [valueItemsSeparator]: ';',
-    [itemOptionSeparator]: ':'
 } as const; // [/]
 
 // [ConfigurationKeys]
@@ -31,3 +28,10 @@ export const configTextColor = 'text-color'; // [/]
 export const singleLineAnnotationSign = '//';
 export const multiLineAnnotationStart = '/*';
 export const multiLineAnnotationEnd = '*/'; // [/]
+
+// [GormRelatedConstants]
+export const gormTagKey = 'gorm';
+export const gormSeparators = {
+    [valueItemsSeparator]: ';',
+    [itemOptionSeparator]: ':'
+} as const; // [/]
