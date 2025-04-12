@@ -10,4 +10,6 @@
 
 ## 示例
 
-![demo.png](https://raw.githubusercontent.com/se-dev-pion/rainbow-struct-field-tags/refs/heads/main/images/demo.png)
+![go.png](https://raw.githubusercontent.com/se-dev-pion/rainbow-struct-field-tags/refs/heads/main/images/go.png)
+
+![goctl.png](https://raw.githubusercontent.com/se-dev-pion/rainbow-struct-field-tags/refs/heads/main/images/goctl.png)
