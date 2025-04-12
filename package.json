@@ -50,6 +50,11 @@
           "type": "string",
           "default": "#22aa44",
           "description": "Basic text color of struct field tag strings."
+        },
+        "rainbow-struct-field-tags.gorm-tag-key": {
+          "type": "string",
+          "default": "gorm",
+          "description": ""
         }
       }
     }

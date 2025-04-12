@@ -22,7 +22,8 @@ export const configValueItemColor = "value-item-color";
 export const configValueOptionColor = "value-option-color";
 export const configValueGapColor = "value-gap-color";
 export const configBackgroundColor = 'background-color';
-export const configTextColor = 'text-color'; // [/]
+export const configTextColor = 'text-color';
+export const configGormTagKey = 'gorm-tag-key'; // [/]
 
 // [GrammerMarkers]
 export const singleLineAnnotationSign = '//';
@@ -31,7 +32,6 @@ export const multiLineAnnotationEnd = '*/';
 export const singleLineStringSign = '"'; // [/]
 
 // [GormRelatedConstants]
-export const gormTagKey = 'gorm';
 export const gormSeparators = {
     [valueItemsSeparator]: ';',
     [itemOptionSeparator]: ':'

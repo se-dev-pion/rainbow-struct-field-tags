@@ -1,9 +1,9 @@
 import vscode from 'vscode';
-import { gormSeparators, gormTagKey, itemOptionSeparator, keyValueSeparator, regexpMatchTags, separators, singleLineAnnotationSign, singleLineStringSign, tagBorder, valueBorder, valueItemsSeparator } from '../common/constants';
+import { gormSeparators, itemOptionSeparator, keyValueSeparator, regexpMatchTags, separators, singleLineAnnotationSign, singleLineStringSign, tagBorder, valueBorder, valueItemsSeparator } from '../common/constants';
 import { createState, overlapWithMultiLineAnnotationAreas, scanMultiLineAnnotations } from '../common/utils';
 import { State } from '../common/types';
 
-export function divideDecoratedBlocks(document: vscode.TextDocument) {
+export function divideDecoratedBlocks(document: vscode.TextDocument, gormTagKey: string) {
     // [Preparations]
     const tagRanges = new Array<vscode.Range>();
     const keyRanges = new Array<vscode.Range>();

@@ -1,5 +1,5 @@
 import vscode from 'vscode';
-import { configValueItemColor, configKey, configKeyColor, configValueOptionColor, configValueGapColor, configTextColor, configBackgroundColor } from '../common/constants';
+import { configValueItemColor, configKey, configKeyColor, configValueOptionColor, configValueGapColor, configTextColor, configBackgroundColor, configGormTagKey } from '../common/constants';
 import { checkDocLanguage, debounced, getCurrentEditor } from '../common/utils';
 import { divideDecoratedBlocks } from '../logics/decorate';
 
@@ -8,11 +8,12 @@ let itemStyle: vscode.TextEditorDecorationType;
 let optionStyle: vscode.TextEditorDecorationType;
 let gapColor: vscode.TextEditorDecorationType;
 let tagStyle: vscode.TextEditorDecorationType;
+let gormTagKey: string;
 export function addHighlight() {
     const updateDecorations = debounced(async () => {
         const editor = getCurrentEditor();
         checkDocLanguage(editor.document);
-        const { tagRanges, keyRanges, itemRanges, optionRanges, gapRanges } = divideDecoratedBlocks(editor.document);
+        const { tagRanges, keyRanges, itemRanges, optionRanges, gapRanges } = divideDecoratedBlocks(editor.document, gormTagKey);
         // [ApplyDecorations]
         editor.setDecorations(tagStyle, tagRanges);
         editor.setDecorations(keyStyle, keyRanges);
@@ -20,13 +21,13 @@ export function addHighlight() {
         editor.setDecorations(optionStyle, optionRanges);
         editor.setDecorations(gapColor, gapRanges); // [/]
     }, 50);
-    initDecorations();
+    loadConfigs();
     updateDecorations();
     // [AddEventListeners]
     vscode.workspace.onDidOpenTextDocument(updateDecorations);
     vscode.workspace.onDidChangeTextDocument(updateDecorations);
     vscode.workspace.onDidChangeConfiguration(() => {
-        initDecorations();
+        loadConfigs();
         updateDecorations();
     });
     vscode.window.onDidChangeActiveTextEditor(updateDecorations);
@@ -34,7 +35,8 @@ export function addHighlight() {
     vscode.window.onDidChangeTextEditorVisibleRanges(updateDecorations); // [/]
 }
 
-function initDecorations() {
+function loadConfigs() {
+    gormTagKey = vscode.workspace.getConfiguration(configKey).get(configGormTagKey) as string;
     // The style created earlier has higher priority
     keyStyle = vscode.window.createTextEditorDecorationType({
         color: vscode.workspace.getConfiguration(configKey).get(configKeyColor) as string,
