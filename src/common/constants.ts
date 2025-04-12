@@ -1,4 +1,4 @@
-export const regexpMatchTags: RegExp = /([a-zA-Z_]+[a-zA-Z0-9_]*|})\s*[^(/\*.*\*/)|=]*\s*`.+`/;
+export const regexpMatchTags = /([a-zA-Z_]+[a-zA-Z0-9_]*|})\s*[^(/\*.*\*/)|=]*\s*`.+`/;
 
 // [TagStringSeparators]
 export const keyValueSeparator = 'key_value';
@@ -6,17 +6,17 @@ export const valueItemsSeparator = 'value_items';
 export const valueBorder = 'value_border';
 export const itemOptionSeparator = 'item_option';
 export const tagBorder = 'tag_border';
-export const separators: Record<string, string> = {
+export const separators = {
     [keyValueSeparator]: ':',
     [valueItemsSeparator]: ',',
     [itemOptionSeparator]: '=',
     [valueBorder]: '"',
     [tagBorder]: '`'
-};
-export const gormSeparators: Record<string, string> = {
+} as const;
+export const gormSeparators = {
     [valueItemsSeparator]: ';',
     [itemOptionSeparator]: ':'
-}; // [/]
+} as const; // [/]
 
 // [ConfigurationKeys]
 export const configKey = "rainbow-struct-field-tags";
