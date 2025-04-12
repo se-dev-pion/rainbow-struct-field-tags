@@ -24,10 +24,11 @@ export const configValueGapColor = "value-gap-color";
 export const configBackgroundColor = 'background-color';
 export const configTextColor = 'text-color'; // [/]
 
-// [AnnotationSigns]
+// [GrammerMarkers]
 export const singleLineAnnotationSign = '//';
 export const multiLineAnnotationStart = '/*';
-export const multiLineAnnotationEnd = '*/'; // [/]
+export const multiLineAnnotationEnd = '*/';
+export const singleLineStringSign = '"'; // [/]
 
 // [GormRelatedConstants]
 export const gormTagKey = 'gorm';

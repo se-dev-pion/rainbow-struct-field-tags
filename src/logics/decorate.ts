@@ -1,5 +1,5 @@
 import vscode from 'vscode';
-import { gormSeparators, gormTagKey, itemOptionSeparator, keyValueSeparator, regexpMatchTags, separators, singleLineAnnotationSign, tagBorder, valueBorder, valueItemsSeparator } from '../common/constants';
+import { gormSeparators, gormTagKey, itemOptionSeparator, keyValueSeparator, regexpMatchTags, separators, singleLineAnnotationSign, singleLineStringSign, tagBorder, valueBorder, valueItemsSeparator } from '../common/constants';
 import { createState, overlapWithMultiLineAnnotationAreas, scanMultiLineAnnotations } from '../common/utils';
 import { State } from '../common/types';
 
@@ -33,9 +33,10 @@ export function divideDecoratedBlocks(document: vscode.TextDocument) {
         if (!regexpMatchTags.test(matchStr)) {
             continue;
         } // [/]
-        // [SkipSingleLineAnnotations]
+        // [SkipSingleLineAnnotationsAndSingleLineStrings]
         const tagLeftBorder = line.indexOf(separators[tagBorder]);
-        if (line.slice(0, tagLeftBorder).includes(singleLineAnnotationSign)) {
+        const prefix = line.slice(0, tagLeftBorder);
+        if (prefix.includes(singleLineAnnotationSign) || prefix.includes(singleLineStringSign)) {
             continue;
         } // [/]
         // [RecordTagStringRange]
