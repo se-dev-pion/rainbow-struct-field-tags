@@ -1,6 +1,6 @@
 import vscode from 'vscode';
-import { ErrInvalidLanguage, ErrNoActiveEditor } from './errors';
-import { multiLineAnnotationEnd, multiLineAnnotationStart, supportedLanguage } from './constants';
+import { ErrNoActiveEditor } from './errors';
+import { multiLineAnnotationEnd, multiLineAnnotationStart, supportedLanguages } from './constants';
 
 export function getCurrentEditor() {
     const editor = vscode.window.activeTextEditor;
@@ -8,12 +8,6 @@ export function getCurrentEditor() {
         throw ErrNoActiveEditor;
     }
     return editor;
-}
-
-export function checkDocLanguage(doc: vscode.TextDocument) {
-    if (doc.languageId !== supportedLanguage) {
-        throw ErrInvalidLanguage;
-    }
 }
 
 export function debounced<T extends Function>(func: T, wait: number) {
@@ -74,4 +68,8 @@ export function scanMultiLineAnnotations(document: vscode.TextDocument, offset: 
         scanMultiLineAnnotations(document, areaEnd, end, areas);
     }
     return areas;
+}
+
+export function isSupportedLanguage(lang: string) {
+    return supportedLanguages.includes(lang);
 }

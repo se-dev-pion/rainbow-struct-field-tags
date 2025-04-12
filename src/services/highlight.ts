@@ -1,6 +1,6 @@
 import vscode from 'vscode';
 import { configValueItemColor, configKey, configKeyColor, configValueOptionColor, configValueGapColor, configTextColor, configBackgroundColor, configGormTagKey } from '../common/constants';
-import { checkDocLanguage, debounced, getCurrentEditor } from '../common/utils';
+import { debounced, getCurrentEditor, isSupportedLanguage } from '../common/utils';
 import { divideDecoratedBlocks } from '../logics/decorate';
 
 let keyStyle: vscode.TextEditorDecorationType;
@@ -12,7 +12,10 @@ let gormTagKey: string;
 export function addHighlight() {
     const updateDecorations = debounced(async () => {
         const editor = getCurrentEditor();
-        checkDocLanguage(editor.document);
+        // [SkipUnsupportedLanguages]
+        if (!isSupportedLanguage(editor.document.languageId)) {
+            return;
+        } // [/]
         const { tagRanges, keyRanges, itemRanges, optionRanges, gapRanges } = divideDecoratedBlocks(editor.document, gormTagKey);
         // [ApplyDecorations]
         editor.setDecorations(tagStyle, tagRanges);

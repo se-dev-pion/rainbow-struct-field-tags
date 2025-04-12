@@ -1,4 +1,6 @@
-export const supportedLanguage = 'go';
+export const langGolang = 'go';
+export const langGoctl = 'goctl';
+export const supportedLanguages = [langGolang, langGoctl];
 export const regexpMatchTags = /([a-zA-Z_]+[a-zA-Z0-9_]*|})\s*[^(/\*.*\*/)|=]*\s*`.+`/;
 
 // [TagStringSeparators]
