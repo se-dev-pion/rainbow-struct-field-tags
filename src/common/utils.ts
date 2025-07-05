@@ -43,8 +43,7 @@ export function overlapWithMultiLineAnnotationAreas(annotationAreas: vscode.Rang
     }
     let annotationArea: vscode.Range;
     const overlaps = new Array<vscode.Range>();
-    while (annotationAreas.length > 0) {
-        annotationArea = annotationAreas[0];
+    for (annotationArea of annotationAreas) {
         if (annotationArea.start.isAfter(matchArea.end)) {
             break;
         }
@@ -52,7 +51,6 @@ export function overlapWithMultiLineAnnotationAreas(annotationAreas: vscode.Rang
         if (overlap) {
             overlaps.push(overlap);
         }
-        annotationAreas.shift();
     }
     return overlaps;
 }
