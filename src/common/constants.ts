@@ -37,4 +37,5 @@ export const singleLineStringSign = '"'; // [/]
 export const gormSeparators = {
     [valueItemsSeparator]: ';',
     [itemOptionSeparator]: ':'
-} as const; // [/]
+} as const;
+export const gormTagItemComment = 'comment' + gormSeparators[itemOptionSeparator]; // [/]
