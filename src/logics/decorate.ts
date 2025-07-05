@@ -62,7 +62,7 @@ export function divideDecoratedBlocks(document: vscode.TextDocument, gormTagKey:
             }
         }; // [/]
         // [RecordGormCommentAreaStart]
-        let gormTagCommentAreaStart = -1;
+        let gormTagCommentAreaStart = Infinity;
         if (regexpMatchGormTags.test(matchStr)) {
             const gormTagMatchStr = regexpMatchGormTags.exec(line)!;
             const gormTagStr = gormTagMatchStr[0];
