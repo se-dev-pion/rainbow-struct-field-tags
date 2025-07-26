@@ -13,7 +13,8 @@
     "Other"
   ],
   "activationEvents": [
-    "onLanguage:go"
+    "onLanguage:go",
+    "onLanguage:goctl"
   ],
   "main": "./out/extension.js",
   "contributes": {
