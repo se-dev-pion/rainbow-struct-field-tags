@@ -60,14 +60,14 @@ function loadConfigs() {
     itemStyle = vscode.window.createTextEditorDecorationType({
         color: vscode.workspace.getConfiguration(configKey).get(configValueItemColor) as string
     });
+    gapColor = vscode.window.createTextEditorDecorationType({
+        color: vscode.workspace.getConfiguration(configKey).get(configValueGapColor) as string
+    });
     optionStyle = vscode.window.createTextEditorDecorationType({
         color: vscode.workspace.getConfiguration(configKey).get(configValueOptionColor) as string
     });
     branchStyle = vscode.window.createTextEditorDecorationType({
         color: vscode.workspace.getConfiguration(configKey).get(configOptionBranchColor)
-    });
-    gapColor = vscode.window.createTextEditorDecorationType({
-        color: vscode.workspace.getConfiguration(configKey).get(configValueGapColor) as string
     });
     tagStyle = vscode.window.createTextEditorDecorationType({
         color: vscode.workspace.getConfiguration(configKey).get(configTextColor),

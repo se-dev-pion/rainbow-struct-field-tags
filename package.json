@@ -39,7 +39,7 @@
         },
         "rainbow-struct-field-tags.option-branch-color": {
           "type": "string",
-          "default": "#1668dc",
+          "default": "#FFFF54",
           "description": "Highlight color of branches in struct field tag values."
         },
         "rainbow-struct-field-tags.value-gap-color": {

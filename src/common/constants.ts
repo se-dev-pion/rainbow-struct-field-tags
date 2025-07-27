@@ -4,19 +4,12 @@ export const supportedLanguages = [langGolang, langGoctl];
 export const regexpMatchTags = /([a-zA-Z_]+[a-zA-Z0-9_]*|})\s*[^(/\*.*\*/)|=]*\s*`.+`/;
 
 // [TagStringSeparators]
-export const keyValueSeparator = 'key_value';
-export const valueItemsSeparator = 'value_items';
-export const valueBorder = 'value_border';
-export const itemOptionSeparator = 'item_option';
-export const optionBranchSeparator = 'option_branch';
-export const tagBorder = 'tag_border';
-export const separators = {
-    [keyValueSeparator]: ':',
-    [valueItemsSeparator]: ',',
-    [itemOptionSeparator]: '=',
-    [valueBorder]: '"',
-    [tagBorder]: '`'
-} as const; // [/]
+export const comma = ',';
+export const colon = ':';
+export const semiColon = ';';
+export const equals = '=';
+export const doubleQuote = '"';
+export const backQuote = '`'; // [/]
 
 // [ConfigurationKeys]
 export const configKey = 'rainbow-struct-field-tags';
@@ -36,10 +29,5 @@ export const multiLineAnnotationEnd = '*/';
 export const singleLineStringSign = '"'; // [/]
 
 // [GormRelatedConstants]
-export const gormSeparators = {
-    [valueItemsSeparator]: ';',
-    [itemOptionSeparator]: ':',
-    [optionBranchSeparator]: ','
-} as const;
-export const gormTagItemComment = 'comment' + gormSeparators[itemOptionSeparator];
+export const gormTagItemCommentKey = 'comment';
 export const gormIndexTagKeys = ['index', 'uniqueIndex']; // [/]

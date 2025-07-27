@@ -1,16 +1,16 @@
 import vscode from 'vscode';
 import {
-    gormSeparators,
-    gormTagItemComment,
-    itemOptionSeparator,
-    keyValueSeparator,
+    backQuote,
+    colon,
+    comma,
+    doubleQuote,
+    equals,
+    gormIndexTagKeys,
+    gormTagItemCommentKey,
     regexpMatchTags,
-    separators,
+    semiColon,
     singleLineAnnotationSign,
-    singleLineStringSign,
-    tagBorder,
-    valueBorder,
-    valueItemsSeparator
+    singleLineStringSign
 } from '../common/constants';
 import {
     createState,
@@ -25,6 +25,7 @@ export function divideDecoratedBlocks(document: vscode.TextDocument, gormTagKey:
     const keyRanges = new Array<vscode.Range>();
     const itemRanges = new Array<vscode.Range>();
     const optionRanges = new Array<vscode.Range>();
+    const branchRanges = new Array<vscode.Range>();
     const gapRanges = new Array<vscode.Range>();
     const lines = document.getText().split('\n');
     const multiLineAnnotationAreas = scanMultiLineAnnotations(
@@ -32,8 +33,7 @@ export function divideDecoratedBlocks(document: vscode.TextDocument, gormTagKey:
         0,
         document.getText().length - 1,
         new Array<vscode.Range>()
-    );
-    const regexpMatchGormTags = new RegExp(`${gormTagKey}:"[^"]*"`); // [/]
+    ); // [/]
     for (let i = 0; i < lines.length; i++) {
         // [SkipNoMatchingLines]
         const line = lines[i];
@@ -59,14 +59,14 @@ export function divideDecoratedBlocks(document: vscode.TextDocument, gormTagKey:
             continue;
         } // [/]
         // [SkipSingleLineAnnotationsAndSingleLineStrings]
-        const tagLeftBorder = line.indexOf(separators[tagBorder]);
+        const tagLeftBorder = line.indexOf(backQuote);
         const prefix = line.slice(0, tagLeftBorder);
         if (prefix.includes(singleLineAnnotationSign) || prefix.includes(singleLineStringSign)) {
             continue;
         } // [/]
         // [RecordTagStringRange]
         const tagStart = tagLeftBorder + 1;
-        const tagEnd = line.lastIndexOf(separators[tagBorder]);
+        const tagEnd = line.lastIndexOf(backQuote);
         recordRange(tagRanges, i, tagLeftBorder, tagEnd + 1); // [/]
         // [KeyRangeRecorder]
         const keyStart = createState(tagStart, -1);
@@ -77,73 +77,122 @@ export function divideDecoratedBlocks(document: vscode.TextDocument, gormTagKey:
         // [OptionRangeRecorder]
         const optionStart = createState(-1, -1);
         const recordOptionRange = buildRangeRecorder(optionRanges, i, optionStart); // [/]
+        // [BranchRangeRecorder]
+        const branchStart = createState(-1, -1);
+        const recordBranchRange = buildRangeRecorder(branchRanges, i, branchStart); // [/]
         // [ValueRangeRecorder]
         const recordValueRange = (end: number) => {
-            if (optionStart.init()) {
+            if (branchStart.init()) {
+                recordBranchRange(end);
+            } else if (optionStart.init()) {
                 recordOptionRange(end);
             } else if (itemStart.init()) {
                 recordItemRange(end);
             }
         }; // [/]
-        // [RecordGormCommentAreaStart]
-        let gormTagCommentAreaStart = Infinity;
-        if (regexpMatchGormTags.test(matchStr)) {
-            const gormTagMatchStr = regexpMatchGormTags.exec(line)!;
-            const gormTagStr = gormTagMatchStr[0];
-            if (gormTagStr.includes(gormTagItemComment)) {
-                gormTagCommentAreaStart =
-                    gormTagMatchStr.index +
-                    gormTagStr.indexOf(gormTagItemComment) +
-                    gormTagItemComment.length;
-            }
-        } // [/]
-        let [inValue, inGormTag] = [false, false];
+        // [GapRangeRecorder]
+        const recordGapRange = (end: number) => {
+            recordRange(gapRanges, i, end, end + 1);
+        }; // [/]
+        let [inValue, inGormTag, inGormComment, inGormIndex] = new Array<boolean>(4).fill(false);
         for (let j = tagStart; j < tagEnd; j++) {
             const char = line[j];
             // [RecordKeyRange]
-            if (!inValue && char === separators[keyValueSeparator] && keyStart.init()) {
+            if (!inValue && char === colon && keyStart.init()) {
                 recordKeyRange(j);
             } // [/]
-            if (char === separators[valueBorder]) {
+            if (char === doubleQuote) {
                 // [RecordValueRangeAndSetKeyStart]
                 if (inValue) {
                     recordValueRange(j);
                     keyStart.set(j + 1);
+                    // [ClearGormContext]
                     inGormTag = false;
+                    inGormComment = false;
+                    inGormIndex = false; // [/]
                 } // [/]
                 // [SetItemStart]
                 else {
                     itemStart.set(j + 1);
+                    // [InitGormContext]
                     const keyRange = keyRanges[keyRanges.length - 1];
                     inGormTag =
                         line.slice(keyRange.start.character, keyRange.end.character).trim() ===
-                        gormTagKey;
+                        gormTagKey; // [/]
                 } // [/]
                 inValue = !inValue;
             }
-            // [RecordItemRange]
-            if (
-                (inGormTag &&
-                    char === gormSeparators[itemOptionSeparator] &&
-                    j < gormTagCommentAreaStart) ||
-                (!inGormTag && char === separators[itemOptionSeparator] && itemStart.init())
-            ) {
-                recordItemRange(j);
-                optionStart.set(j + 1);
+            // [SkipHandleCommentTagOfGorm]
+            if (inGormComment) {
+                continue;
             } // [/]
-            if (
-                (inGormTag &&
-                    char === gormSeparators[valueItemsSeparator] &&
-                    j < gormTagCommentAreaStart) ||
-                (!inGormTag && char === separators[valueItemsSeparator])
-            ) {
-                // [SkipEmptyValue]
-                if (!inValue) {
+            if (inGormTag) {
+                // [SkipEscapedChar] https://gorm.io/docs/models.html#Fields-Tags
+                if (char === '\\') {
+                    j++;
                     continue;
                 } // [/]
-                recordRange(gapRanges, i, j, j + 1);
-                recordValueRange(j);
-                itemStart.set(j + 1);
+                switch (char) {
+                    case colon:
+                        // https://gorm.io/docs/indexes.html#Index-Tag
+                        if (inGormIndex) {
+                            recordOptionRange(j);
+                            branchStart.set(j + 1);
+                        }
+                        // https://gorm.io/docs/models.html#Fields-Tags
+                        else {
+                            recordItemRange(j);
+                            optionStart.set(j + 1);
+                            // [InitGormSubContext]
+                            const itemRange = itemRanges[itemRanges.length - 1];
+                            const item = line
+                                .slice(itemRange.start.character, itemRange.end.character)
+                                .trim();
+                            inGormComment = item === gormTagItemCommentKey;
+                            inGormIndex = gormIndexTagKeys.includes(item); // [/]
+                        }
+                        break;
+                    // https://gorm.io/docs/models.html#Fields-Tags
+                    case semiColon:
+                        // [SkipEmptyValue]
+                        if (!inValue) {
+                            continue;
+                        } // [/]
+                        recordGapRange(j);
+                        recordValueRange(j);
+                        itemStart.set(j + 1);
+                        inGormIndex = false;
+                        break;
+                    // https://gorm.io/docs/indexes.html#Index-Tag
+                    case comma:
+                        // [RecordGapBetweenSubTagsOfIndexTag]
+                        if (inGormIndex) {
+                            recordGapRange(j);
+                        } // [/]
+                        // [RecordSubTagOfIndexTag]
+                        if (branchStart.init()) {
+                            recordBranchRange(j);
+                            optionStart.set(j + 1);
+                        } // [/]
+                }
+            } else {
+                switch (char) {
+                    case equals:
+                        if (itemStart.init()) {
+                            recordItemRange(j);
+                            optionStart.set(j + 1);
+                        }
+                        break;
+                    case comma:
+                        // [SkipEmptyValue]
+                        if (!inValue) {
+                            continue;
+                        } // [/]
+                        recordRange(gapRanges, i, j, j + 1);
+                        recordValueRange(j);
+                        itemStart.set(j + 1);
+                        break;
+                }
             }
         }
     }
@@ -152,6 +201,7 @@ export function divideDecoratedBlocks(document: vscode.TextDocument, gormTagKey:
         keyRanges,
         itemRanges,
         optionRanges,
+        branchRanges,
         gapRanges
     };
 }
