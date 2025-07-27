@@ -20,7 +20,8 @@ export const configOptionBranchColor = 'option-branch-color';
 export const configValueGapColor = 'value-gap-color';
 export const configBackgroundColor = 'background-color';
 export const configTextColor = 'text-color';
-export const configGormTagKey = 'gorm-tag-key'; // [/]
+export const configGormTagKey = 'gorm-tag-key';
+export const configDebounceTimeout = 'debounce-timeout'; // [/]
 
 // [GrammerMarkers]
 export const singleLineAnnotationSign = '//';
