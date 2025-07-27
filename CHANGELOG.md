@@ -2,6 +2,13 @@
 
 All notable changes to the "rainbow-struct-field-tags" extension will be documented in this file.
 
+## [v0.3.1]
+
+- Fix: [fully support of gorm](https://github.com/se-dev-pion/rainbow-struct-field-tags/issues/23)
+- Fix: [active on goctl opened](https://github.com/se-dev-pion/rainbow-struct-field-tags/issues/28)
+- Feature: enable config debounce timeout
+- Optimize: won't throw error positively
+
 ## [v0.2.1]
 
 - Fix: [avoid no effect caused by gorm](https://github.com/se-dev-pion/rainbow-struct-field-tags/issues/23)
