@@ -1,14 +1,5 @@
 import vscode from 'vscode';
-import { ErrNoActiveEditor } from './errors';
 import { multiLineAnnotationEnd, multiLineAnnotationStart, supportedLanguages } from './constants';
-
-export function getCurrentEditor() {
-    const editor = vscode.window.activeTextEditor;
-    if (!editor) {
-        throw ErrNoActiveEditor;
-    }
-    return editor;
-}
 
 export function debounced<T extends Function>(func: T, wait: number) {
     let timeout: NodeJS.Timeout | null = null;
@@ -37,7 +28,10 @@ export function createState<T>(originValue: T, defaultValue: T) {
     } as const;
 }
 
-export function overlapWithMultiLineAnnotationAreas(annotationAreas: vscode.Range[], matchArea: vscode.Range) {
+export function overlapWithMultiLineAnnotationAreas(
+    annotationAreas: vscode.Range[],
+    matchArea: vscode.Range
+) {
     if (annotationAreas.length === 0) {
         return [];
     }
@@ -55,7 +49,12 @@ export function overlapWithMultiLineAnnotationAreas(annotationAreas: vscode.Rang
     return overlaps;
 }
 
-export function scanMultiLineAnnotations(document: vscode.TextDocument, offset: number, end: number, areas: vscode.Range[]) {
+export function scanMultiLineAnnotations(
+    document: vscode.TextDocument,
+    offset: number,
+    end: number,
+    areas: vscode.Range[]
+) {
     let areaStart = document.getText().slice(offset).indexOf(multiLineAnnotationStart);
     if (areaStart !== -1) {
         areaStart += offset;

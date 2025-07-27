@@ -11,7 +11,7 @@ import {
     configOptionBranchColor,
     configDebounceTimeout
 } from '../common/constants';
-import { debounced, getCurrentEditor, isSupportedLanguage } from '../common/utils';
+import { debounced, isSupportedLanguage } from '../common/utils';
 import { divideDecoratedBlocks } from '../logics/decorate';
 
 export function addHighlight() {
@@ -80,7 +80,11 @@ function loadDecorator(config: {
     const { keyStyle, itemStyle, optionStyle, branchStyle, gapStyle, tagStyle, gormTagKey, delay } =
         config;
     return debounced(async () => {
-        const editor = getCurrentEditor();
+        const editor = vscode.window.activeTextEditor;
+        // [SkipWithoutActiveEditor]
+        if (!editor) {
+            return;
+        } // [/]
         // [SkipUnsupportedLanguages]
         if (!isSupportedLanguage(editor.document.languageId)) {
             return;
