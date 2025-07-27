@@ -37,6 +37,11 @@
           "default": "#FF6347",
           "description": "Highlight color of options in struct field tag values."
         },
+        "rainbow-struct-field-tags.option-branch-color": {
+          "type": "string",
+          "default": "#1668dc",
+          "description": "Highlight color of branches in struct field tag values."
+        },
         "rainbow-struct-field-tags.value-gap-color": {
           "type": "string",
           "default": "rgba(128,128,128,0.5)",
