@@ -61,6 +61,11 @@
           "type": "string",
           "default": "gorm",
           "description": "Key to be recognized as gorm tags."
+        },
+        "rainbow-struct-field-tags.debounce-timeout": {
+          "type": "integer",
+          "default": 50,
+          "description": "The debounce timeout milliseconds of redecorate on input, greater for less device requirements and less for less delay."
         }
       }
     }
