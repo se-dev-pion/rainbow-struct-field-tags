@@ -1,6 +1,22 @@
 import vscode from 'vscode';
-import { gormSeparators, gormTagItemComment, itemOptionSeparator, keyValueSeparator, regexpMatchTags, separators, singleLineAnnotationSign, singleLineStringSign, tagBorder, valueBorder, valueItemsSeparator } from '../common/constants';
-import { createState, overlapWithMultiLineAnnotationAreas, scanMultiLineAnnotations } from '../common/utils';
+import {
+    gormSeparators,
+    gormTagItemComment,
+    itemOptionSeparator,
+    keyValueSeparator,
+    regexpMatchTags,
+    separators,
+    singleLineAnnotationSign,
+    singleLineStringSign,
+    tagBorder,
+    valueBorder,
+    valueItemsSeparator
+} from '../common/constants';
+import {
+    createState,
+    overlapWithMultiLineAnnotationAreas,
+    scanMultiLineAnnotations
+} from '../common/utils';
 import { State } from '../common/types';
 
 export function divideDecoratedBlocks(document: vscode.TextDocument, gormTagKey: string) {
@@ -11,7 +27,12 @@ export function divideDecoratedBlocks(document: vscode.TextDocument, gormTagKey:
     const optionRanges = new Array<vscode.Range>();
     const gapRanges = new Array<vscode.Range>();
     const lines = document.getText().split('\n');
-    const multiLineAnnotationAreas = scanMultiLineAnnotations(document, 0, document.getText().length - 1, new Array<vscode.Range>());
+    const multiLineAnnotationAreas = scanMultiLineAnnotations(
+        document,
+        0,
+        document.getText().length - 1,
+        new Array<vscode.Range>()
+    );
     const regexpMatchGormTags = new RegExp(`${gormTagKey}:"[^"]*"`); // [/]
     for (let i = 0; i < lines.length; i++) {
         // [SkipNoMatchingLines]
@@ -27,7 +48,10 @@ export function divideDecoratedBlocks(document: vscode.TextDocument, gormTagKey:
             new vscode.Position(i, start),
             new vscode.Position(i, end)
         );
-        const overlapAreas = overlapWithMultiLineAnnotationAreas(multiLineAnnotationAreas, matchArea);
+        const overlapAreas = overlapWithMultiLineAnnotationAreas(
+            multiLineAnnotationAreas,
+            matchArea
+        );
         for (const area of overlapAreas) {
             matchStr = matchStr.replace(document.getText(area), '');
         }
@@ -67,7 +91,10 @@ export function divideDecoratedBlocks(document: vscode.TextDocument, gormTagKey:
             const gormTagMatchStr = regexpMatchGormTags.exec(line)!;
             const gormTagStr = gormTagMatchStr[0];
             if (gormTagStr.includes(gormTagItemComment)) {
-                gormTagCommentAreaStart = gormTagMatchStr.index + gormTagStr.indexOf(gormTagItemComment) + gormTagItemComment.length;
+                gormTagCommentAreaStart =
+                    gormTagMatchStr.index +
+                    gormTagStr.indexOf(gormTagItemComment) +
+                    gormTagItemComment.length;
             }
         } // [/]
         let [inValue, inGormTag] = [false, false];
@@ -88,16 +115,28 @@ export function divideDecoratedBlocks(document: vscode.TextDocument, gormTagKey:
                 else {
                     itemStart.set(j + 1);
                     const keyRange = keyRanges[keyRanges.length - 1];
-                    inGormTag = line.slice(keyRange.start.character, keyRange.end.character).trim() === gormTagKey;
+                    inGormTag =
+                        line.slice(keyRange.start.character, keyRange.end.character).trim() ===
+                        gormTagKey;
                 } // [/]
                 inValue = !inValue;
             }
             // [RecordItemRange]
-            if ((inGormTag && char === gormSeparators[itemOptionSeparator] && j < gormTagCommentAreaStart) || (!inGormTag && char === separators[itemOptionSeparator]) && itemStart.init()) {
+            if (
+                (inGormTag &&
+                    char === gormSeparators[itemOptionSeparator] &&
+                    j < gormTagCommentAreaStart) ||
+                (!inGormTag && char === separators[itemOptionSeparator] && itemStart.init())
+            ) {
                 recordItemRange(j);
                 optionStart.set(j + 1);
             } // [/]
-            if ((inGormTag && char === gormSeparators[valueItemsSeparator] && j < gormTagCommentAreaStart) || (!inGormTag && char === separators[valueItemsSeparator])) {
+            if (
+                (inGormTag &&
+                    char === gormSeparators[valueItemsSeparator] &&
+                    j < gormTagCommentAreaStart) ||
+                (!inGormTag && char === separators[valueItemsSeparator])
+            ) {
                 // [SkipEmptyValue]
                 if (!inValue) {
                     continue;
@@ -118,10 +157,7 @@ export function divideDecoratedBlocks(document: vscode.TextDocument, gormTagKey:
 }
 
 function recordRange(ranges: vscode.Range[], line: number, start: number, end: number) {
-    ranges.push(new vscode.Range(
-        new vscode.Position(line, start),
-        new vscode.Position(line, end)
-    ));
+    ranges.push(new vscode.Range(new vscode.Position(line, start), new vscode.Position(line, end)));
 }
 
 function buildRangeRecorder(ranges: vscode.Range[], line: number, start: State<number>) {
