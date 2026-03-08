@@ -24,37 +24,37 @@
       "properties": {
         "rainbow-struct-field-tags.key-color": {
           "type": "string",
-          "default": "#1E90FF",
+          "default": "",
           "description": "Highlight color of keys in struct field tags."
         },
         "rainbow-struct-field-tags.value-item-color": {
           "type": "string",
-          "default": "#FFA500",
+          "default": "",
           "description": "Highlight color of items in struct field tag values."
         },
         "rainbow-struct-field-tags.value-option-color": {
           "type": "string",
-          "default": "#FF6347",
+          "default": "",
           "description": "Highlight color of options in struct field tag values."
         },
         "rainbow-struct-field-tags.option-branch-color": {
           "type": "string",
-          "default": "#FFFF54",
+          "default": "",
           "description": "Highlight color of branches in struct field tag values."
         },
         "rainbow-struct-field-tags.value-gap-color": {
           "type": "string",
-          "default": "rgba(128,128,128,0.5)",
+          "default": "",
           "description": "Highlight color of gaps between items struct field tag values."
         },
         "rainbow-struct-field-tags.background-color": {
           "type": "string",
-          "default": "#000c18",
+          "default": "",
           "description": "Background color of struct field tag strings."
         },
         "rainbow-struct-field-tags.text-color": {
           "type": "string",
-          "default": "#22aa44",
+          "default": "",
           "description": "Basic text color of struct field tag strings."
         },
         "rainbow-struct-field-tags.gorm-tag-key": {
@@ -68,7 +68,17 @@
           "description": "The debounce timeout milliseconds of redecorate on input, greater for less device requirements and less for less delay."
         }
       }
-    }
+    },
+    "grammars": [
+      {
+        "scopeName": "tag.struct.go",
+        "path": "./syntaxes/embed.tmLanguage.json",
+        "injectTo": [
+          "source.go",
+          "source.goctl"
+        ]
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
