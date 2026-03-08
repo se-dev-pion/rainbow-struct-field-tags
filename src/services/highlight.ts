@@ -14,45 +14,52 @@ import {
 import { debounced, isSupportedLanguage } from '../common/utils';
 import { divideDecoratedBlocks } from '../logics/decorate';
 
-export function addHighlight() {
-    let updateDecorations = loadDecorator(loadConfigs());
+export function addHighlight(context: vscode.ExtensionContext) {
+    let updateDecorations = loadDecorator(loadConfigs(context));
     updateDecorations();
-    // [AddEventListeners]
-    vscode.workspace.onDidOpenTextDocument(updateDecorations);
-    vscode.workspace.onDidChangeTextDocument(updateDecorations);
-    vscode.workspace.onDidChangeConfiguration(() => {
-        updateDecorations = loadDecorator(loadConfigs());
-        updateDecorations();
-    });
-    vscode.window.onDidChangeActiveTextEditor(updateDecorations);
-    vscode.window.onDidChangeVisibleTextEditors(updateDecorations);
-    vscode.window.onDidChangeTextEditorVisibleRanges(updateDecorations); // [/]
+    context.subscriptions.push(
+        vscode.workspace.onDidOpenTextDocument(updateDecorations),
+        vscode.workspace.onDidChangeTextDocument(updateDecorations),
+        vscode.workspace.onDidChangeConfiguration(() => {
+            updateDecorations = loadDecorator(loadConfigs(context));
+            updateDecorations();
+        }),
+        vscode.window.onDidChangeActiveTextEditor(updateDecorations),
+        vscode.window.onDidChangeVisibleTextEditors(updateDecorations),
+        vscode.window.onDidChangeTextEditorVisibleRanges(updateDecorations)
+    );
 }
 
-function loadConfigs() {
+function loadConfigs(context: vscode.ExtensionContext) {
     const gormTagKey = vscode.workspace.getConfiguration(configKey).get(configGormTagKey) as string;
     // The style created earlier has higher priority
     const keyStyle = vscode.window.createTextEditorDecorationType({
         color: vscode.workspace.getConfiguration(configKey).get(configKeyColor) as string
     });
+    context.subscriptions.push(keyStyle);
     const itemStyle = vscode.window.createTextEditorDecorationType({
         color: vscode.workspace.getConfiguration(configKey).get(configValueItemColor) as string
     });
+    context.subscriptions.push(itemStyle);
     const gapStyle = vscode.window.createTextEditorDecorationType({
         color: vscode.workspace.getConfiguration(configKey).get(configValueGapColor) as string
     });
+    context.subscriptions.push(gapStyle);
     const optionStyle = vscode.window.createTextEditorDecorationType({
         color: vscode.workspace.getConfiguration(configKey).get(configValueOptionColor) as string
     });
+    context.subscriptions.push(optionStyle);
     const branchStyle = vscode.window.createTextEditorDecorationType({
         color: vscode.workspace.getConfiguration(configKey).get(configOptionBranchColor)
     });
+    context.subscriptions.push(branchStyle);
     const tagStyle = vscode.window.createTextEditorDecorationType({
         color: vscode.workspace.getConfiguration(configKey).get(configTextColor),
         backgroundColor: vscode.workspace
             .getConfiguration(configKey)
             .get(configBackgroundColor) as string
     });
+    context.subscriptions.push(tagStyle);
     const delay =
         vscode.workspace.getConfiguration(configKey).get<number>(configDebounceTimeout) ?? 0;
     return {
