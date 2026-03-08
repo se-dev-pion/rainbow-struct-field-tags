@@ -4,6 +4,7 @@
 	"recommendations": [
 		"dbaeumer.vscode-eslint",
 		"ms-vscode.extension-test-runner",
-		"xiaoxin-technology.goctl"
+		"xiaoxin-technology.goctl",
+		"catppuccin.catppuccin-vsc"
 	]
 }
