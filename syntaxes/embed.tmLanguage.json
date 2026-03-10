@@ -44,6 +44,17 @@
                             }
                         },
                         {
+                            "match": "comment(:)([^;]+)",
+                            "captures": {
+                                "1": {
+                                    "name": "string"
+                                },
+                                "2": {
+                                    "name": "storage.type"
+                                }
+                            }
+                        },
+                        {
                             "match": "[^;]+(:)([^;]+)",
                             "captures": {
                                 "1": {
