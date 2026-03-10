@@ -2,6 +2,10 @@
 
 All notable changes to the "rainbow-struct-field-tags" extension will be documented in this file.
 
+## [v0.4.0]
+
+- Feature: [compatible with themes](https://github.com/se-dev-pion/rainbow-struct-field-tags/issues/31)
+
 ## [v0.3.1]
 
 - Fix: [fully support of gorm](https://github.com/se-dev-pion/rainbow-struct-field-tags/issues/23)
