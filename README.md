@@ -7,10 +7,32 @@ English | [中文](README.zh.md)
 
 ## Introduction
 
-***A simple Visual Studio Code extension highlighting struct field tags in Go that make it easier to read.***
+Highlighting struct field tags in Go that make it easier to read.
+
+1. Automatically adapt to different color themes, and support customized highlighting colors.
+2. Support `go-zero` and `gorm`.
 
 ## Example
 
-![go.png](https://raw.githubusercontent.com/se-dev-pion/rainbow-struct-field-tags/refs/heads/main/images/go.png)
+1. Default highlighting in `Abyss` Theme
 
-![goctl.png](https://raw.githubusercontent.com/se-dev-pion/rainbow-struct-field-tags/refs/heads/main/images/goctl.png)
+    |||
+    |-|-|
+    |![go_abyss.png](https://raw.githubusercontent.com/se-dev-pion/rainbow-struct-field-tags/refs/heads/main/images/go_abyss.png)|![goctl_abyss.png](https://raw.githubusercontent.com/se-dev-pion/rainbow-struct-field-tags/refs/heads/main/images/goctl_abyss.png)|
+
+2. Default highlighting in `Catppuccin Latte` Theme
+
+    |||
+    |-|-|
+    |![go_catppuccin_latte.png](https://raw.githubusercontent.com/se-dev-pion/rainbow-struct-field-tags/refs/heads/main/images/go_catppuccin_latte.png)|![goctl_catppuccin_latte.png](https://raw.githubusercontent.com/se-dev-pion/rainbow-struct-field-tags/refs/heads/main/images/goctl_catppuccin_latte.png)|
+
+3. Customized highlighting
+
+    |||
+    |-|-|
+    |![go_custom.png](https://raw.githubusercontent.com/se-dev-pion/rainbow-struct-field-tags/refs/heads/main/images/go_custom.png)|![goctl_custom.png](https://raw.githubusercontent.com/se-dev-pion/rainbow-struct-field-tags/refs/heads/main/images/goctl_custom.png)|
+
+4. How to customize highlighting colors
+
+        As showing below, open the Settings and search "rainbow-struct-field-tags", then you can change settings.
+    ![settings.png](https://raw.githubusercontent.com/se-dev-pion/rainbow-struct-field-tags/refs/heads/main/images/settings.png)

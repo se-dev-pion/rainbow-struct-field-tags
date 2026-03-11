@@ -7,10 +7,32 @@
 
 ## 简介
 
-***一个简单的Visual Studio Code扩展，高亮显示Go中的结构字段标签，使其更易于阅读。***
+高亮显示Go中的结构字段标签，使其更易于阅读。
+
+1. 自动适配不同颜色主题，也支持用户自定义配色。
+2. 支持`go-zero`和`gorm`。
 
 ## 示例
 
-![go.png](https://raw.githubusercontent.com/se-dev-pion/rainbow-struct-field-tags/refs/heads/main/images/go.png)
+1. 在`Abyss`主题下的默认高亮
 
-![goctl.png](https://raw.githubusercontent.com/se-dev-pion/rainbow-struct-field-tags/refs/heads/main/images/goctl.png)
+    |||
+    |-|-|
+    |![go_abyss.png](https://raw.githubusercontent.com/se-dev-pion/rainbow-struct-field-tags/refs/heads/main/images/go_abyss.png)|![goctl_abyss.png](https://raw.githubusercontent.com/se-dev-pion/rainbow-struct-field-tags/refs/heads/main/images/goctl_abyss.png)|
+
+2. 在`Catppuccin Latte`主题下的默认高亮
+
+    |||
+    |-|-|
+    |![go_catppuccin_latte.png](https://raw.githubusercontent.com/se-dev-pion/rainbow-struct-field-tags/refs/heads/main/images/go_catppuccin_latte.png)|![goctl_catppuccin_latte.png](https://raw.githubusercontent.com/se-dev-pion/rainbow-struct-field-tags/refs/heads/main/images/goctl_catppuccin_latte.png)|
+
+3. 自定义高亮
+
+    |||
+    |-|-|
+    |![go_custom.png](https://raw.githubusercontent.com/se-dev-pion/rainbow-struct-field-tags/refs/heads/main/images/go_custom.png)|![goctl_custom.png](https://raw.githubusercontent.com/se-dev-pion/rainbow-struct-field-tags/refs/heads/main/images/goctl_custom.png)|
+
+4. 如何自定义高亮颜色
+
+        如下图所示，打开设置并搜索"rainbow-struct-field-tags"，然后你就可以修改配置了。
+    ![settings.png](https://raw.githubusercontent.com/se-dev-pion/rainbow-struct-field-tags/refs/heads/main/images/settings.png)
