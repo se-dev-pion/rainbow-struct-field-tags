@@ -36,3 +36,15 @@ Highlighting struct field tags in Go that make it easier to read.
 
         As showing below, open the Settings and search "rainbow-struct-field-tags", then you can change settings.
     ![settings.png](https://raw.githubusercontent.com/se-dev-pion/rainbow-struct-field-tags/refs/heads/main/images/settings.png)
+
+## Extension Settings
+
+- `rainbow-struct-field-tags.key-color`: Highlight color of keys in struct field tags.
+- `rainbow-struct-field-tags.value-item-color`: Highlight color of items in struct field tag values.
+- `rainbow-struct-field-tags.value-option-color`: Highlight color of options in struct field tag values.
+- `rainbow-struct-field-tags.option-branch-color`: Highlight color of branches in struct field tag values.
+- `rainbow-struct-field-tags.value-gap-color`: Highlight color of gaps between items struct field tag values.
+- `rainbow-struct-field-tags.background-color`: Background color of struct field tag strings.
+- `rainbow-struct-field-tags.text-color`: Basic text color of struct field tag strings.
+- `rainbow-struct-field-tags.gorm-tag-key`: Key to be recognized as gorm tags.
+- `rainbow-struct-field-tags.debounce-timeout`: The debounce timeout milliseconds of redecorate on input, greater for less device requirements and less for less delay.
