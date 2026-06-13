@@ -2,7 +2,11 @@
 
 English | [中文](README.zh.md)
 
-![GitHub package.json version](https://img.shields.io/github/package-json/v/se-dev-pion/rainbow-struct-field-tags?color=11bb1f) ![GitHub License](https://img.shields.io/github/license/se-dev-pion/rainbow-struct-field-tags?color=282661) [![Open VSX Downloads](https://img.shields.io/open-vsx/dt/se-dev-pion/rainbow-struct-field-tags?label=open-vsx+downloads&color=c160ef)](https://open-vsx.org/extension/se-dev-pion/rainbow-struct-field-tags) [![Ask DeepWiki](https://img.shields.io/badge/doc-deepwiki-blue?logo=wikidata
+![GitHub package.json version](https://img.shields.io/github/package-json/v/se-dev-pion/rainbow-struct-field-tags?color=11bb1f)
+![GitHub License](https://img.shields.io/github/license/se-dev-pion/rainbow-struct-field-tags?color=282661)
+[![VS Marketplace Downloads](https://vsmarketplacebadges.dev/downloads-short/se-dev-pion.rainbow-struct-field-tags.svg?label=vs-marketplace%20downloads)](https://marketplace.visualstudio.com/items?itemName=se-dev-pion.rainbow-struct-field-tags)
+[![Open VSX Downloads](https://img.shields.io/open-vsx/dt/se-dev-pion/rainbow-struct-field-tags?label=open-vsx+downloads&color=c160ef)](https://open-vsx.org/extension/se-dev-pion/rainbow-struct-field-tags)
+[![Ask DeepWiki](https://img.shields.io/badge/doc-deepwiki-blue?logo=wikidata
 )](https://deepwiki.com/se-dev-pion/rainbow-struct-field-tags)
 
 ## Introduction
